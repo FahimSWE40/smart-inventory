@@ -450,4 +450,4 @@ This project was developed as a course project for **SE322 Software Engineering*
 
 ---
 
-*Built with ❤ by [Your Team Name]*
+*Built with ❤ by Anix*
