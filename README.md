@@ -219,10 +219,22 @@ smart-inventory/
 │   ├── predictions.php        # View AI predictions
 │   └── stock_log.php          # View stock movement history
 │
-└── staff/                     # Staff-only pages
-    ├── dashboard.php          # Staff overview with alerts
-    ├── log_stock.php          # Log stock in/out movements
-    └── inventory.php          # View inventory with status
+├── staff/                     # Staff-only pages
+│   ├── dashboard.php          # Staff overview with alerts
+│   ├── log_stock.php          # Log stock in/out movements
+│   └── inventory.php          # View inventory with status
+│
+└── screenshots/               # Project screenshots for README
+    ├── 01_login.png
+    ├── 02_admin_dashboard.png
+    ├── 03_manage_users.png
+    ├── 04_manage_products.png
+    ├── 05_predictions.png
+    ├── 06_manager_dashboard.png
+    ├── 07_stock_log.png
+    ├── 08_staff_dashboard.png
+    ├── 09_log_stock.png
+    └── 10_staff_inventory.png
 ```
 
 ---
@@ -294,37 +306,109 @@ Each role is redirected to their own dashboard upon login. Attempting to access 
 
 ## Functional Requirements by Team Member
 
-### Member 1 — Authentication & User Management
+### Member 1 — Authentication, User Management & Product CRUD
 1. **User Registration & Login** — Secure auth with PHP sessions, password hashing (bcrypt), form validation, and role-based redirects.
 2. **Admin User CRUD** — Create, read, update, and delete users. Assign roles (admin/manager/staff). Activate/deactivate accounts.
-
-**Files:** `index.php`, `register.php`, `logout.php`, `auth.php`, `admin/manage_users.php`
-
-### Member 2 — Product & Stock Management
 3. **Product CRUD** — Add, view, edit, and delete products with SKU, category, price, stock levels, and lead time configuration.
+
+**Files:** `index.php`, `register.php`, `logout.php`, `auth.php`, `admin/manage_users.php`, `admin/manage_products.php`, `manager/manage_products.php`
+
+### Member 2 — Stock Management, AI Prediction Engine & Dashboard
 4. **Stock Movement Logging** — Staff logs stock-in (receiving) and stock-out (usage) with quantity, reason, and timestamps. Auto-updates product stock levels.
-
-**Files:** `admin/manage_products.php`, `manager/manage_products.php`, `staff/log_stock.php`, `manager/stock_log.php`
-
-### Member 3 — AI Prediction Engine & Dashboard
 5. **Prediction Algorithm** — Calculates average daily consumption, days until stockout, predicted stockout date, suggested reorder quantity, and demand trend detection.
 6. **Dashboard & Visualization** — Role-specific dashboards with stat cards, color-coded alerts (red/yellow/green), trend badges, filterable prediction cards, and searchable tables.
 
-**Files:** `includes/predict_engine.php`, `admin/dashboard.php`, `manager/dashboard.php`, `staff/dashboard.php`, `admin/predictions.php`, `manager/predictions.php`, `staff/inventory.php`
+**Files:** `staff/log_stock.php`, `manager/stock_log.php`, `includes/predict_engine.php`, `admin/dashboard.php`, `manager/dashboard.php`, `staff/dashboard.php`, `admin/predictions.php`, `manager/predictions.php`, `staff/inventory.php`
 
 ---
 
-## Screenshots Guide
+## Detailed Project Description & Screenshots
 
-When presenting the project, demonstrate these key screens:
+### 1. Login Page — Secure Authentication Gateway
 
-1. **Login Page** — Dark themed with branding
-2. **Admin Dashboard** — Stats overview + critical alerts + recent movements
-3. **Manage Users** — Create/edit/delete with role assignment
-4. **Manage Products** — Full CRUD with stock level indicators
-5. **AI Predictions** — Card grid with status dots, trend badges, and filter buttons
-6. **Staff Log Stock** — Movement form + recent activity
-7. **Staff Inventory** — Filterable product cards with status
+The login page features a sleek dark-themed interface with the StockAI branding. Users enter their email and password to authenticate via PHP sessions with bcrypt-hashed password verification. The system validates credentials server-side and redirects users to their role-specific dashboard (Admin, Manager, or Staff). A "Register here" link is provided for new account creation.
+
+![Login Page](screenshots/01_login.png)
+
+---
+
+### 2. Admin Dashboard — System Overview & Intelligence Hub
+
+The Admin Dashboard provides a comprehensive bird's-eye view of the entire inventory system. It displays real-time stat cards including **Total Products** (8), **Critical Stock** alerts (items running out within 7 days, shown in red), **Warning** items (stockout within 30 days, in yellow), and **Healthy** items (30+ days of stock, in green). Additional cards show **Total Users** (broken down by role) and **Inventory Value** (total monetary value of all stock). Below the stats, a **Critical Items** section highlights products that need immediate attention with their stock level, days left, suggested reorder quantity, and demand trend (Increasing/Stable/Decreasing).
+
+![Admin Dashboard](screenshots/02_admin_dashboard.png)
+
+---
+
+### 3. Manage Users — Full User CRUD & Role Assignment
+
+The Manage Users page (Admin-only) enables full CRUD operations on system users. The **Create New User** form allows admins to add users with a Full Name, Email, Password, and assigned Role (Admin/Manager/Staff). Below the form, the **All Users** table displays all registered accounts with their name, email, role badge (color-coded), active status (green dot for active), join date, and action buttons for **Edit** and **Delete**. A search bar enables real-time filtering of the user list.
+
+![Manage Users](screenshots/03_manage_users.png)
+
+---
+
+### 4. Manage Products — Inventory Product CRUD
+
+The Manage Products page allows Admins and Managers to perform full CRUD operations on inventory items. The **Add New Product** form includes fields for Product Name, SKU (unique identifier), Category, Unit Price, Current Stock, Minimum Stock Level (threshold for alerts), and Lead Time in Days (used by the AI prediction engine). The **All Products** table below lists all 8 products with searchable columns, showing stock levels, pricing, and action buttons for editing and deleting products.
+
+![Manage Products](screenshots/04_manage_products.png)
+
+---
+
+### 5. AI Predictions — Intelligent Stock Forecasting
+
+The Predictions page is the heart of StockAI's intelligence. It displays AI-generated prediction cards for every product, each showing:
+- **Status Dot** — Red (Critical: stockout within 7 days), Yellow (Warning: within 30 days), or Green (Healthy: 30+ days)
+- **Average Daily Consumption** — Calculated from the last 30 days of stock-out movements
+- **Days Until Stockout** — Estimated days before the product runs out
+- **Predicted Stockout Date** — The exact date the product is forecasted to hit zero
+- **Suggested Reorder Quantity** — AI-calculated quantity adjusted for demand trends
+- **Trend Badge** — Increasing (demand rising, orders 25% more), Stable, or Decreasing (demand falling, orders 15% less)
+
+Filter buttons allow quick sorting by status: All, Critical, Warning, or Healthy.
+
+![AI Predictions](screenshots/05_predictions.png)
+
+---
+
+### 6. Manager Dashboard — Inventory Overview & Attention Items
+
+The Manager Dashboard mirrors the Admin Dashboard's stat cards (Total Products, Critical Stock, Warning, Inventory Value) but is tailored for the Manager role. It prominently features an **Items Requiring Attention** section that displays a card grid of all products that are in Critical or Warning status. Each card shows the product name, SKU, current stock, days left until stockout, suggested reorder quantity, and the demand trend badge. This gives managers an at-a-glance view of which items need restocking.
+
+![Manager Dashboard](screenshots/06_manager_dashboard.png)
+
+---
+
+### 7. Stock Movement Log — Transaction History
+
+The Stock Log page (accessible by Admins and Managers) provides a complete history of all stock movements in the system. The table displays each transaction with the product name, movement type (Stock In or Stock Out, color-coded in green and red respectively), quantity moved, reason for the movement (e.g., "Daily usage", "Weekly restock"), who logged it, and the timestamp. A search bar enables filtering through the movement history.
+
+![Stock Movement Log](screenshots/07_stock_log.png)
+
+---
+
+### 8. Staff Dashboard — Low-Stock Alerts & Quick Actions
+
+The Staff Dashboard provides a focused view for warehouse/floor staff. It displays stat cards for Total Products, items below minimum stock level, and items that are critically low. The dashboard shows **Low Stock Alerts** — products where current stock has fallen below the minimum threshold — making it easy for staff to know which items need immediate restocking action.
+
+![Staff Dashboard](screenshots/08_staff_dashboard.png)
+
+---
+
+### 9. Log Stock — Record Stock Movements
+
+The Log Stock page is the primary tool for Staff members. It features a form to record stock-in (receiving goods) or stock-out (usage/dispatch) movements. Staff selects the product from a dropdown, chooses the movement type (In/Out), enters the quantity, and provides a reason. Upon submission, the system automatically updates the product's current stock level in the database. Below the form, a **Recent Movements** table shows the most recent stock transactions for quick reference.
+
+![Log Stock](screenshots/09_log_stock.png)
+
+---
+
+### 10. Staff Inventory View — Product Status Overview
+
+The Staff Inventory page displays all products as visual cards with color-coded status indicators. Each card shows the product name, SKU, current stock level, minimum stock threshold, and a status badge (Critical/Warning/Healthy). Filter buttons at the top allow staff to quickly view All products, or filter by Critical, Warning, or Healthy status. This provides a quick visual scan of the entire inventory health.
+
+![Staff Inventory](screenshots/10_staff_inventory.png)
 
 ---
 
